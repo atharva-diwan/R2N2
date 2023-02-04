@@ -8,7 +8,7 @@ import os
 import sys
 if (sys.version_info < (3, 0)):
     raise Exception("Please follow the installation instruction on 'https://github.com/chrischoy/3D-R2N2'")
-sys.path.append('R2N2/')
+sys.path.append('reconstruction_3d/R2N2/')
 import shutil
 import numpy as np
 from subprocess import call
@@ -26,12 +26,12 @@ def cmd_exists(cmd):
     return shutil.which(cmd) is not None
 
 
-def download_model(fn):
-    if not os.path.isfile(fn):
-        # Download the file if doesn't exist
-        print('Downloading a pretrained model')
-        call(['wget', 'http://cvgl.stanford.edu/data2/ResidualGRUNet.npy',
-              '--create-dirs', '-o', fn])
+# def download_model(fn):
+#     if not os.path.isfile(fn):
+#         # Download the file if doesn't exist
+#         print('Downloading a pretrained model')
+#         call(['wget', 'http://cvgl.stanford.edu/data2/ResidualGRUNet.npy',
+#               '--create-dirs', '-o', fn])
 
 
 def load_demo_images(img_folder_path):
@@ -52,7 +52,7 @@ def create_voxel_object(img_folder_path, pred_file_name):
     demo_imgs = load_demo_images(img_folder_path)
 
     # Download and load pretrained weights
-    download_model(DEFAULT_WEIGHTS)
+    # download_model(DEFAULT_WEIGHTS)
 
     # Use the default network model
     NetClass = load_model('ResidualGRUNet')
