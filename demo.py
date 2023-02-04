@@ -19,7 +19,7 @@ from lib.config import cfg, cfg_from_list
 from lib.solver import Solver
 from lib.voxel import voxel2obj
 
-DEFAULT_WEIGHTS = 'output/ResidualGRUNet/default_model/weights.npy'
+DEFAULT_WEIGHTS = 'output/ResidualGRUNet/default_model/ResidualGRUNet.npy'
 
 
 def cmd_exists(cmd):
@@ -30,26 +30,26 @@ def download_model(fn):
     if not os.path.isfile(fn):
         # Download the file if doewn't exist
         print('Downloading a pretrained model')
-        call(['curl', 'ftp://cs.stanford.edu/cs/cvgl/ResidualGRUNet.npy',
+        call(['curl', 'http://cvgl.stanford.edu/data2/ResidualGRUNet.npy',
               '--create-dirs', '-o', fn])
 
 
-def load_demo_images():
+def load_demo_images(img_folder_path):
     ims = []
-    for i in range(3):
-        im = Image.open('imgs/%d.png' % i)
+    for i in range(1, 3):
+        im = Image.open(img_folder_path+'/%d.png' % i)
         ims.append([np.array(im).transpose(
             (2, 0, 1)).astype(np.float32) / 255.])
     return np.array(ims)
 
 
-def main():
-    '''Main demo function'''
+def create_voxel_object(img_folder_path):
+
     # Save prediction into a file named 'prediction.obj' or the given argument
-    pred_file_name = sys.argv[1] if len(sys.argv) > 1 else 'prediction.obj'
+    pred_file_name = 'prediction.obj'
 
     # load images
-    demo_imgs = load_demo_images()
+    demo_imgs = load_demo_images(img_folder_path)
 
     # Download and load pretrained weights
     download_model(DEFAULT_WEIGHTS)
@@ -71,11 +71,11 @@ def main():
     # Use meshlab or other mesh viewers to visualize the prediction.
     # For Ubuntu>=14.04, you can install meshlab using
     # `sudo apt-get install meshlab`
-    if cmd_exists('meshlab'):
-        call(['meshlab', pred_file_name])
-    else:
-        print('Meshlab not found: please use visualization of your choice to view %s' %
-              pred_file_name)
+    # if cmd_exists('meshlab'):
+    #     call(['meshlab', pred_file_name])
+    # else:
+    #     print('Meshlab not found: please use visualization of your choice to view %s' %
+    #           pred_file_name)
 
 
 if __name__ == '__main__':

@@ -68,7 +68,7 @@ class Net(object):
 
     def load(self, filename, ignore_param=True):
         print('loading network parameters from ' + filename)
-        params_cpu_file = np.load(filename)
+        params_cpu_file = np.load(filename, allow_pickle=True)
         if filename.endswith('npz'):
             params_cpu = params_cpu_file[params_cpu_file.keys()[0]]
         else:
