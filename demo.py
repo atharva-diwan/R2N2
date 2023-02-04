@@ -8,7 +8,7 @@ import os
 import sys
 if (sys.version_info < (3, 0)):
     raise Exception("Please follow the installation instruction on 'https://github.com/chrischoy/3D-R2N2'")
-sys.path.append('reconstruction_3d/R2N2/')
+sys.path.append('vision/reconstruction_3d/R2N2/')
 import shutil
 import numpy as np
 from subprocess import call
@@ -19,7 +19,7 @@ from lib.config import cfg, cfg_from_list
 from lib.solver import Solver
 from lib.voxel import voxel2obj
 
-DEFAULT_WEIGHTS = 'R2N2/output/ResidualGRUNet/default_model/ResidualGRUNet.npy'
+DEFAULT_WEIGHTS = 'vision/reconstruction_3d/R2N2/weights/ResidualGRUNet.npy'
 
 
 def cmd_exists(cmd):

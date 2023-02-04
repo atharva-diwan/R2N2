@@ -9,4 +9,6 @@
 wiki/
 
 # Results
-output/
+weights/
+
+__pycache__/
