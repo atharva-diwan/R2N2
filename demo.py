@@ -45,6 +45,9 @@ def load_demo_images(img_folder_path):
 
 def create_voxel_object(img_folder_path, pred_file_name):
 
+    # Set the batch size to 1
+    cfg_from_list(['CONST.BATCH_SIZE', 1])
+
     # load images
     demo_imgs = load_demo_images(img_folder_path)
 
@@ -73,9 +76,3 @@ def create_voxel_object(img_folder_path, pred_file_name):
     # else:
     #     print('Meshlab not found: please use visualization of your choice to view %s' %
     #           pred_file_name)
-
-
-if __name__ == '__main__':
-    # Set the batch size to 1
-    cfg_from_list(['CONST.BATCH_SIZE', 1])
-    main()
