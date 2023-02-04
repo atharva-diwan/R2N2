@@ -8,7 +8,7 @@ import os
 import sys
 if (sys.version_info < (3, 0)):
     raise Exception("Please follow the installation instruction on 'https://github.com/chrischoy/3D-R2N2'")
-
+sys.path.append('R2N2/')
 import shutil
 import numpy as np
 from subprocess import call
@@ -19,7 +19,7 @@ from lib.config import cfg, cfg_from_list
 from lib.solver import Solver
 from lib.voxel import voxel2obj
 
-DEFAULT_WEIGHTS = 'output/ResidualGRUNet/default_model/ResidualGRUNet.npy'
+DEFAULT_WEIGHTS = 'R2N2/output/ResidualGRUNet/default_model/ResidualGRUNet.npy'
 
 
 def cmd_exists(cmd):
@@ -28,25 +28,22 @@ def cmd_exists(cmd):
 
 def download_model(fn):
     if not os.path.isfile(fn):
-        # Download the file if doewn't exist
+        # Download the file if doesn't exist
         print('Downloading a pretrained model')
-        call(['curl', 'http://cvgl.stanford.edu/data2/ResidualGRUNet.npy',
+        call(['wget', 'http://cvgl.stanford.edu/data2/ResidualGRUNet.npy',
               '--create-dirs', '-o', fn])
 
 
 def load_demo_images(img_folder_path):
     ims = []
     for i in range(1, 3):
-        im = Image.open(img_folder_path+'/%d.png' % i)
+        im = Image.open(os.path.join(img_folder_path, '%d.png'% i))
         ims.append([np.array(im).transpose(
             (2, 0, 1)).astype(np.float32) / 255.])
     return np.array(ims)
 
 
-def create_voxel_object(img_folder_path):
-
-    # Save prediction into a file named 'prediction.obj' or the given argument
-    pred_file_name = 'prediction.obj'
+def create_voxel_object(img_folder_path, pred_file_name):
 
     # load images
     demo_imgs = load_demo_images(img_folder_path)
