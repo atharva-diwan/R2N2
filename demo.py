@@ -34,22 +34,24 @@ def cmd_exists(cmd):
 #               '--create-dirs', '-o', fn])
 
 
-def load_demo_images(img_folder_path):
+def load_images(img1, img2):
     ims = []
-    for i in range(1, 3):
-        im = Image.open(os.path.join(img_folder_path, '%d.png'% i))
-        ims.append([np.array(im).transpose(
-            (2, 0, 1)).astype(np.float32) / 255.])
+    # for i in range(1, 3):
+    #     im = Image.open(os.path.join(img_folder_path, '%d.png'% i))
+    ims.append([np.array(img1).transpose(
+        (2, 0, 1)).astype(np.float32) / 255.])
+    ims.append([np.array(img2).transpose(
+        (2, 0, 1)).astype(np.float32) / 255.])
     return np.array(ims)
 
 
-def create_voxel_object(img_folder_path, pred_file_name):
+def create_voxel_object(img1, img2, pred_file_name):
 
     # Set the batch size to 1
     cfg_from_list(['CONST.BATCH_SIZE', 1])
 
     # load images
-    demo_imgs = load_demo_images(img_folder_path)
+    demo_imgs = load_images(img1, img2)
 
     # Download and load pretrained weights
     # download_model(DEFAULT_WEIGHTS)
