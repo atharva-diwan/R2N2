@@ -12,7 +12,7 @@ sys.path.append('../../vision/reconstruction_3d/R2N2/')
 import shutil
 import numpy as np
 from subprocess import call
-
+import cv2
 from PIL import Image
 from models import load_model
 from lib.config import cfg, cfg_from_list
@@ -38,9 +38,22 @@ def load_images(img1, img2):
     ims = []
     # for i in range(1, 3):
     #     im = Image.open(os.path.join(img_folder_path, '%d.png'% i))
-    ims.append([np.array(img1).transpose(
+
+    #crop and resize
+    center = img1.shape
+    w, h = 1200, 1080
+    x = center[1]/2 - w/2
+    y = center[0]/2 - h/2
+
+    crop_img1 = img1[int(y):int(y+h), int(x):int(x+w)]
+    crop_img1 = cv2.resize(crop_img1, (127, 127))
+
+    crop_img2 = img2[int(y):int(y+h), int(x):int(x+w)]
+    crop_img2 = cv2.resize(crop_img2, (127, 127))
+
+    ims.append([np.array(crop_img1).transpose(
         (2, 0, 1)).astype(np.float32) / 255.])
-    ims.append([np.array(img2).transpose(
+    ims.append([np.array(crop_img2).transpose(
         (2, 0, 1)).astype(np.float32) / 255.])
     return np.array(ims)
 
